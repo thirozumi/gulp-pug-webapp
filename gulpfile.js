@@ -5,6 +5,7 @@
  */
 
 const gulp = require('gulp'),
+      cache = require('gulp-cache'),
       sass = require('gulp-sass'),
       pug =  require('gulp-pug'),
       concat = require('gulp-concat'),
@@ -31,19 +32,18 @@ gulp.task('clean', function() {
 });
 
 gulp.task('images', function (done) {
-  gulp.src('app/assets/images/**/*')
+  gulp.src('app/assets/images/**/*.{png,jpg,gif,svg}')
     .pipe(changed(dist + '/assets/images'))
-    .pipe(imagemin([
+    .pipe(cache(imagemin([
       imagemin.gifsicle({ interlaced: true }),
       imagemin.jpegtran({ progressive: true }),
       imagemin.optipng({ optimizationLevel: 5 }),
       imagemin.svgo({
-        plugins: [{
-          removeViewBox: false,
-          collapseGroups: true
-        }]
+        plugins: [
+          { removeViewBox: false }
+        ]
       })
-    ]))
+    ])))
     .pipe(gulp.dest(dist + '/assets/images'))
     done();
 });
@@ -117,7 +117,7 @@ gulp.task('fonts', function() {
   .pipe(gulp.dest(dist + '/assets/fonts'));
 });
 
-gulp.task('watch', function(done) {
+gulp.task('dev', function(done) {
   browsersync.init({
     server: {
       baseDir: dist
