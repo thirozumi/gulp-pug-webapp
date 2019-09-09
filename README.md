@@ -14,8 +14,8 @@ $ npm install
 $ npm run build
 ```
 
-## Watch
+## Dev
 
 ```
-$ npm run watch
+$ npm run dev
 ```
